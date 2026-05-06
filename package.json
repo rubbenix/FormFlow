@@ -1,0 +1,135 @@
+{
+  "name": "formflow",
+  "version": "1.0.0",
+  "description": "Build smarter forms in minutes. A smart multi-step forms library for modern web applications.",
+  "author": "FormFlow Contributors",
+  "license": "MIT",
+  "homepage": "https://github.com/formflow-js/formflow#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/formflow-js/formflow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/formflow-js/formflow/issues"
+  },
+  "keywords": [
+    "form",
+    "forms",
+    "multi-step",
+    "wizard",
+    "validation",
+    "react",
+    "nextjs",
+    "typescript",
+    "formflow",
+    "conditional",
+    "progress",
+    "accessibility",
+    "ux",
+    "frontend"
+  ],
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/react/index.d.ts",
+        "default": "./dist/react/index.js"
+      },
+      "require": {
+        "types": "./dist/react/index.d.cts",
+        "default": "./dist/react/index.cjs"
+      }
+    },
+    "./validators": {
+      "import": {
+        "types": "./dist/validators/index.d.ts",
+        "default": "./dist/validators/index.js"
+      },
+      "require": {
+        "types": "./dist/validators/index.d.cts",
+        "default": "./dist/validators/index.cjs"
+      }
+    },
+    "./vanilla": {
+      "import": {
+        "types": "./dist/vanilla/index.d.ts",
+        "default": "./dist/vanilla/index.js"
+      },
+      "require": {
+        "types": "./dist/vanilla/index.d.cts",
+        "default": "./dist/vanilla/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src tests --ext .ts,.tsx",
+    "lint:fix": "eslint src tests --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "size": "size-limit",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "tsup": "^8.1.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
+  },
+  "size-limit": [
+    {
+      "path": "./dist/index.js",
+      "limit": "15 KB"
+    },
+    {
+      "path": "./dist/react/index.js",
+      "limit": "20 KB"
+    }
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
