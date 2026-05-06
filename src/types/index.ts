@@ -8,7 +8,13 @@ import type { ReactNode } from "react";
 // ─── Primitive Value Types ───────────────────────────────────────────────────
 
 /** All supported field value types */
-export type FieldValue = string | number | boolean | string[] | null | undefined;
+export type FieldValue =
+  | string
+  | number
+  | boolean
+  | string[]
+  | null
+  | undefined;
 
 /** A map of field IDs to their current values */
 export type FormValues = Record<string, FieldValue>;
@@ -541,4 +547,3 @@ export interface VanillaFormFlowInstance {
   /** Subscribe to state changes */
   subscribe: (listener: (state: FormFlowState) => void) => () => void;
 }
-

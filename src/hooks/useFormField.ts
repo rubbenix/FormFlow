@@ -7,10 +7,7 @@
 
 import { useCallback, useContext } from "react";
 import { FormFlowContext } from "../react/context.js";
-import type {
-  FieldValue,
-  FieldValidationState,
-} from "../types/index.js";
+import type { FieldValue, FieldValidationState } from "../types/index.js";
 
 export interface UseFormFieldReturn {
   value: FieldValue;

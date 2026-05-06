@@ -42,9 +42,7 @@ function toNumber(value: FieldValue): number {
  *
  * @param message Custom error message
  */
-export function required(
-  message = "This field is required",
-): Validator {
+export function required(message = "This field is required"): Validator {
   return {
     key: "required",
     validate(value) {
@@ -88,10 +86,7 @@ export function email(
  * @param min Minimum number of characters
  * @param message Custom error message (receives `min` as a token)
  */
-export function minLength(
-  min: number,
-  message?: string,
-): Validator {
+export function minLength(min: number, message?: string): Validator {
   return {
     key: `minLength:${min}`,
     validate(value) {
@@ -115,10 +110,7 @@ export function minLength(
  * @param max Maximum number of characters
  * @param message Custom error message
  */
-export function maxLength(
-  max: number,
-  message?: string,
-): Validator {
+export function maxLength(max: number, message?: string): Validator {
   return {
     key: `maxLength:${max}`,
     validate(value) {
@@ -190,10 +182,7 @@ export function number(
  * @param regex The regex to test against
  * @param message Error message shown when the pattern does not match
  */
-export function pattern(
-  regex: RegExp,
-  message = "Invalid format",
-): Validator {
+export function pattern(regex: RegExp, message = "Invalid format"): Validator {
   return {
     key: `pattern:${regex.source}`,
     validate(value) {
@@ -243,10 +232,7 @@ export function url(
  * @param fieldId The ID of the field to match against
  * @param message Custom error message
  */
-export function matches(
-  fieldId: string,
-  message?: string,
-): Validator {
+export function matches(fieldId: string, message?: string): Validator {
   return {
     key: `matches:${fieldId}`,
     validate(value: FieldValue, formValues: FormValues) {

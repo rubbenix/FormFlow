@@ -116,7 +116,10 @@ function renderField(
     label.textContent = field.label;
     const isRequired = field.validators?.some((v) => v.key === "required");
     if (isRequired) {
-      const req = el("span", { "aria-hidden": "true", style: "color: var(--ff-color-error); margin-left: 2px;" });
+      const req = el("span", {
+        "aria-hidden": "true",
+        style: "color: var(--ff-color-error); margin-left: 2px;",
+      });
       req.textContent = " *";
       label.appendChild(req);
     }
@@ -152,7 +155,11 @@ function renderField(
       class: `ff-input${hasError ? " ff-error" : ""}`,
     }) as HTMLSelectElement;
     if (field.placeholder) {
-      const ph = el("option", { value: "", disabled: true, selected: true }) as HTMLOptionElement;
+      const ph = el("option", {
+        value: "",
+        disabled: true,
+        selected: true,
+      }) as HTMLOptionElement;
       ph.textContent = field.placeholder;
       sel.appendChild(ph);
     }
@@ -167,7 +174,10 @@ function renderField(
     sel.addEventListener("blur", onBlur);
     input = sel;
   } else if (field.type === "checkbox") {
-    const label = el("label", { class: "ff-label", style: "display: flex; align-items: center; gap: 8px; cursor: pointer;" });
+    const label = el("label", {
+      class: "ff-label",
+      style: "display: flex; align-items: center; gap: 8px; cursor: pointer;",
+    });
     const cb = el("input", {
       type: "checkbox",
       id: `ff-${field.id}`,
@@ -192,7 +202,11 @@ function renderField(
       inp.value = String(value ?? "");
     }
     inp.addEventListener("input", () => {
-      onChange(field.type === "number" && inp.value !== "" ? Number(inp.value) : inp.value);
+      onChange(
+        field.type === "number" && inp.value !== ""
+          ? Number(inp.value)
+          : inp.value,
+      );
     });
     inp.addEventListener("blur", onBlur);
     input = inp;
@@ -376,7 +390,10 @@ export function createFormFlow(
     });
 
     if (state.isSubmitting) {
-      const spinner = el("span", { class: "ff-spinner", "aria-hidden": "true" });
+      const spinner = el("span", {
+        class: "ff-spinner",
+        "aria-hidden": "true",
+      });
       nextBtn.appendChild(spinner);
       nextBtn.appendChild(document.createTextNode("Submitting…"));
       nextBtn.setAttribute("disabled", "");

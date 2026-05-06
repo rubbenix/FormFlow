@@ -99,7 +99,10 @@ describe("email()", () => {
   });
 
   it("passes for subdomain email", async () => {
-    const result = await validator.validate("user@mail.company.co.uk", EMPTY_VALUES);
+    const result = await validator.validate(
+      "user@mail.company.co.uk",
+      EMPTY_VALUES,
+    );
     expect(result.valid).toBe(true);
   });
 
@@ -215,12 +218,16 @@ describe("pattern()", () => {
 describe("url()", () => {
   it("passes for valid https URL", async () => {
     const v = url();
-    expect((await v.validate("https://example.com", EMPTY_VALUES)).valid).toBe(true);
+    expect((await v.validate("https://example.com", EMPTY_VALUES)).valid).toBe(
+      true,
+    );
   });
 
   it("passes for valid http URL", async () => {
     const v = url();
-    expect((await v.validate("http://example.com/path?q=1", EMPTY_VALUES)).valid).toBe(true);
+    expect(
+      (await v.validate("http://example.com/path?q=1", EMPTY_VALUES)).valid,
+    ).toBe(true);
   });
 
   it("fails for invalid URL", async () => {
@@ -230,7 +237,9 @@ describe("url()", () => {
 
   it("fails for disallowed protocol", async () => {
     const v = url(["https"]); // only https
-    expect((await v.validate("http://example.com", EMPTY_VALUES)).valid).toBe(false);
+    expect((await v.validate("http://example.com", EMPTY_VALUES)).valid).toBe(
+      false,
+    );
   });
 });
 

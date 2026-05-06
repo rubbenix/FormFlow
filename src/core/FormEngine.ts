@@ -64,9 +64,7 @@ export class FormEngine {
   getProgress(): number {
     const total = this.getTotalSteps();
     if (total === 0) return 0;
-    return Math.round(
-      ((this.getCurrentStepIndex() + 1) / total) * 100,
-    );
+    return Math.round(((this.getCurrentStepIndex() + 1) / total) * 100);
   }
 
   canGoBack(): boolean {
@@ -161,10 +159,7 @@ export class FormEngine {
     }
 
     // Call onLeave for current step
-    currentStep.onLeave?.(
-      this.extractStepValues(currentStep, values),
-      values,
-    );
+    currentStep.onLeave?.(this.extractStepValues(currentStep, values), values);
 
     // Perform navigation
     this.manager.goNext();
@@ -177,11 +172,7 @@ export class FormEngine {
     }
 
     // Fire onStepChange
-    this.config.onStepChange?.(
-      nextStep ?? currentStep,
-      currentStep,
-      "forward",
-    );
+    this.config.onStepChange?.(nextStep ?? currentStep, currentStep, "forward");
   }
 
   goBack(): void {
@@ -191,10 +182,7 @@ export class FormEngine {
     const { values } = this.manager.getState();
 
     // Call onLeave
-    currentStep.onLeave?.(
-      this.extractStepValues(currentStep, values),
-      values,
-    );
+    currentStep.onLeave?.(this.extractStepValues(currentStep, values), values);
 
     this.manager.goBack();
 

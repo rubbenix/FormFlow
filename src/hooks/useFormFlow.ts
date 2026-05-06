@@ -5,13 +5,7 @@
  * a stable API object that components can consume.
  */
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 import { FormEngine } from "../core/FormEngine.js";
 import type {
   FormFlowConfig,
@@ -63,8 +57,7 @@ export function useFormFlow(config: FormFlowConfig): UseFormFlowReturn {
 
   const state: FormFlowState = engine.getState();
   const visibleSteps: FormStep[] = engine.getVisibleSteps();
-  const currentStep: FormStep =
-    engine.getCurrentStep() ?? config.steps[0]!;
+  const currentStep: FormStep = engine.getCurrentStep() ?? config.steps[0]!;
   const currentStepIndex = engine.getCurrentStepIndex();
   const totalSteps = engine.getTotalSteps();
   const progress = engine.getProgress();
@@ -105,7 +98,7 @@ export function useFormFlow(config: FormFlowConfig): UseFormFlowReturn {
 
   const touchField = useCallback(
     (fieldId: string) => {
-      engine.touchField(fieldId);  // via StateManager
+      engine.touchField(fieldId); // via StateManager
     },
     [engine],
   );

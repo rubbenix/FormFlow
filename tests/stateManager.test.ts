@@ -19,9 +19,7 @@ const STEP_1: FormStep = {
 const STEP_2: FormStep = {
   id: "step2",
   title: "Step 2",
-  fields: [
-    { id: "email", type: "email", label: "Email", defaultValue: "" },
-  ],
+  fields: [{ id: "email", type: "email", label: "Email", defaultValue: "" }],
 };
 
 const STEP_3: FormStep = {

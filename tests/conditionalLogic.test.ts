@@ -136,7 +136,11 @@ describe("Conditional step visibility", () => {
     const m = new StateManager(steps);
     m.setValue("wantsNewsletter", true);
     expect(m.getState().visibleStepIds).toContain("newsletter");
-    expect(m.getState().visibleStepIds).toEqual(["welcome", "newsletter", "done"]);
+    expect(m.getState().visibleStepIds).toEqual([
+      "welcome",
+      "newsletter",
+      "done",
+    ]);
   });
 
   it("total step count changes dynamically", () => {
@@ -183,7 +187,9 @@ describe("Complex conditional scenarios", () => {
             type: "text",
             label: "Risky",
             condition: {
-              fn: () => { throw new Error("Condition error"); },
+              fn: () => {
+                throw new Error("Condition error");
+              },
             },
           },
         ],

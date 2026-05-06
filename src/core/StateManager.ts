@@ -37,10 +37,7 @@ function createInitialFieldValidation(): FieldValidationState {
 }
 
 /** Resolves visible step IDs based on current form values */
-function resolveVisibleSteps(
-  steps: FormStep[],
-  values: FormValues,
-): string[] {
+function resolveVisibleSteps(steps: FormStep[], values: FormValues): string[] {
   return steps
     .filter((step) => {
       if (!step.condition) return true;
@@ -74,8 +71,7 @@ export class StateManager {
   ) {
     this.steps = steps;
     this.persistence = persistence;
-    this.persistenceKey =
-      persistence?.key ?? `formflow-${formId ?? "default"}`;
+    this.persistenceKey = persistence?.key ?? `formflow-${formId ?? "default"}`;
     this.initialValues = initialValues;
 
     // Compute initial values by merging field defaults with provided initialValues
@@ -123,9 +119,7 @@ export class StateManager {
   }
 
   getVisibleSteps(): FormStep[] {
-    return this.steps.filter((s) =>
-      this.state.visibleStepIds.includes(s.id),
-    );
+    return this.steps.filter((s) => this.state.visibleStepIds.includes(s.id));
   }
 
   getCurrentStep(): FormStep | undefined {
@@ -228,10 +222,7 @@ export class StateManager {
 
   goNext(): void {
     const visibleCount = this.state.visibleStepIds.length;
-    const next = Math.min(
-      this.state.currentStepIndex + 1,
-      visibleCount - 1,
-    );
+    const next = Math.min(this.state.currentStepIndex + 1, visibleCount - 1);
 
     this.setState({ currentStepIndex: next, direction: "forward" });
     this.persistIfEnabled();
@@ -261,7 +252,11 @@ export class StateManager {
   }
 
   setSubmitted(): void {
-    this.setState({ isSubmitting: false, isSubmitted: true, submitError: null });
+    this.setState({
+      isSubmitting: false,
+      isSubmitted: true,
+      submitError: null,
+    });
     this.clearPersisted();
   }
 

@@ -107,7 +107,10 @@ export const ProgressBar = React.memo(function ProgressBar({
                         : isActive
                           ? theme.colors.primary
                           : theme.colors.progressTrack,
-                      color: isCompleted || isActive ? "#fff" : theme.colors.textMuted,
+                      color:
+                        isCompleted || isActive
+                          ? "#fff"
+                          : theme.colors.textMuted,
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -128,7 +131,10 @@ export const ProgressBar = React.memo(function ProgressBar({
       )}
 
       {/* Progress track */}
-      <div style={getProgressTrackStyles(theme)} className={classNames.progressBar}>
+      <div
+        style={getProgressTrackStyles(theme)}
+        className={classNames.progressBar}
+      >
         <div
           style={getProgressFillStyles(theme, clampedPct)}
           className={classNames.progressFill}

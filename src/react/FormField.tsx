@@ -137,7 +137,11 @@ export const FormField = React.memo(function FormField({
         return (
           <select
             {...sharedInputProps}
-            value={typeof value === "string" || typeof value === "number" ? value : ""}
+            value={
+              typeof value === "string" || typeof value === "number"
+                ? value
+                : ""
+            }
             onChange={(e) => onChange(e.target.value)}
             style={{
               ...sharedInputProps.style,
@@ -171,7 +175,11 @@ export const FormField = React.memo(function FormField({
           <div
             role="radiogroup"
             aria-labelledby={inputId}
-            style={{ display: "flex", flexDirection: "column", gap: t.spacing.sm }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: t.spacing.sm,
+            }}
           >
             {field.options?.map((opt) => {
               const radioId = `${inputId}-${String(opt.value)}`;
@@ -183,10 +191,13 @@ export const FormField = React.memo(function FormField({
                     display: "flex",
                     alignItems: "center",
                     gap: t.spacing.sm,
-                    cursor: opt.disabled ?? field.disabled ? "not-allowed" : "pointer",
+                    cursor:
+                      (opt.disabled ?? field.disabled)
+                        ? "not-allowed"
+                        : "pointer",
                     fontSize: t.typography.fontSizeBase,
                     color: t.colors.text,
-                    opacity: opt.disabled ?? field.disabled ? 0.5 : 1,
+                    opacity: (opt.disabled ?? field.disabled) ? 0.5 : 1,
                   }}
                 >
                   <input
@@ -230,7 +241,11 @@ export const FormField = React.memo(function FormField({
               disabled={field.disabled}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              style={{ accentColor: t.colors.primary, width: "16px", height: "16px" }}
+              style={{
+                accentColor: t.colors.primary,
+                width: "16px",
+                height: "16px",
+              }}
               aria-invalid={hasError}
               aria-describedby={sharedInputProps["aria-describedby"]}
             />
@@ -243,7 +258,11 @@ export const FormField = React.memo(function FormField({
           <div
             role="group"
             aria-labelledby={inputId}
-            style={{ display: "flex", flexDirection: "column", gap: t.spacing.sm }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: t.spacing.sm,
+            }}
           >
             {field.options?.map((opt) => {
               const cbId = `${inputId}-${String(opt.value)}`;
@@ -258,10 +277,13 @@ export const FormField = React.memo(function FormField({
                     display: "flex",
                     alignItems: "center",
                     gap: t.spacing.sm,
-                    cursor: opt.disabled ?? field.disabled ? "not-allowed" : "pointer",
+                    cursor:
+                      (opt.disabled ?? field.disabled)
+                        ? "not-allowed"
+                        : "pointer",
                     fontSize: t.typography.fontSizeBase,
                     color: t.colors.text,
-                    opacity: opt.disabled ?? field.disabled ? 0.5 : 1,
+                    opacity: (opt.disabled ?? field.disabled) ? 0.5 : 1,
                   }}
                 >
                   <input
@@ -278,7 +300,11 @@ export const FormField = React.memo(function FormField({
                     }}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    style={{ accentColor: t.colors.primary, width: "16px", height: "16px" }}
+                    style={{
+                      accentColor: t.colors.primary,
+                      width: "16px",
+                      height: "16px",
+                    }}
                   />
                   {opt.label}
                 </label>
@@ -329,10 +355,7 @@ export const FormField = React.memo(function FormField({
   const isCheckbox = field.type === "checkbox";
 
   return (
-    <div
-      style={{ marginBottom: t.spacing.md }}
-      className={classNames.field}
-    >
+    <div style={{ marginBottom: t.spacing.md }} className={classNames.field}>
       {/* Label (skip for checkbox — rendered inline) */}
       {!isCheckbox && (
         <label

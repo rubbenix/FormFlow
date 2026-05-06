@@ -27,18 +27,12 @@ export async function validateField(
     let result: ValidationResult;
     try {
       result = await Promise.resolve(
-        validator.validate(
-          value as FormValues[string],
-          formValues,
-        ),
+        validator.validate(value as FormValues[string], formValues),
       );
     } catch (err) {
       result = {
         valid: false,
-        message:
-          err instanceof Error
-            ? err.message
-            : "Validation error",
+        message: err instanceof Error ? err.message : "Validation error",
       };
     }
 

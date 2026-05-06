@@ -35,9 +35,7 @@ export function getInputStyles(
     outline: "none",
     transition: `border-color ${theme.transitions.fast}, box-shadow ${theme.transitions.fast}`,
     boxSizing: "border-box",
-    boxShadow: isFocused
-      ? `0 0 0 3px ${theme.colors.borderFocus}22`
-      : "none",
+    boxShadow: isFocused ? `0 0 0 3px ${theme.colors.borderFocus}22` : "none",
   };
 }
 

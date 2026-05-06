@@ -171,10 +171,7 @@ describe("FormEngine — onBeforeNext hook", () => {
 describe("FormEngine — lifecycle hooks", () => {
   it("calls onLeave when leaving a step", async () => {
     const onLeave = vi.fn();
-    const stepsWithHooks: FormStep[] = [
-      { ...steps[0]!, onLeave },
-      steps[1]!,
-    ];
+    const stepsWithHooks: FormStep[] = [{ ...steps[0]!, onLeave }, steps[1]!];
     const engine = new FormEngine({
       steps: stepsWithHooks,
       onSubmit: vi.fn(),
@@ -187,10 +184,7 @@ describe("FormEngine — lifecycle hooks", () => {
 
   it("calls onEnter when arriving at a step", async () => {
     const onEnter = vi.fn();
-    const stepsWithHooks: FormStep[] = [
-      steps[0]!,
-      { ...steps[1]!, onEnter },
-    ];
+    const stepsWithHooks: FormStep[] = [steps[0]!, { ...steps[1]!, onEnter }];
     const engine = new FormEngine({
       steps: stepsWithHooks,
       onSubmit: vi.fn(),
