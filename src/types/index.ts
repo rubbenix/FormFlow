@@ -3,6 +3,8 @@
  * Complete TypeScript type system for the FormFlow library.
  */
 
+import type { ReactNode } from "react";
+
 // ─── Primitive Value Types ───────────────────────────────────────────────────
 
 /** All supported field value types */
@@ -402,14 +404,14 @@ export interface FormFlowProps extends FormFlowConfig {
   /** Additional class name on the root element */
   className?: string;
   /** Custom render for the progress bar */
-  renderProgress?: (progress: number, step: FormStep) => React.ReactNode;
+  renderProgress?: (progress: number, step: FormStep) => ReactNode;
   /** Custom render for the navigation area */
   renderNavigation?: (
     canGoBack: boolean,
     canGoForward: boolean,
     isLastStep: boolean,
     isSubmitting: boolean,
-  ) => React.ReactNode;
+  ) => ReactNode;
 }
 
 /** Props for <FormStep /> */
@@ -540,6 +542,3 @@ export interface VanillaFormFlowInstance {
   subscribe: (listener: (state: FormFlowState) => void) => () => void;
 }
 
-// Re-export React namespace for prop types that reference React.ReactNode
-import type React from "react";
-export type { React };
