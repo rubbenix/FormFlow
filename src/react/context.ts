@@ -4,7 +4,7 @@
  */
 
 import { createContext } from "react";
-import type { UseFormFlowReturn } from "../hooks/useFormFlow.js";
+import type { UseFormFlowReturn } from "../types/index.js";
 import type { FormFlowTheme, FormFlowClassNames } from "../types/index.js";
 
 export interface FormFlowContextValue {

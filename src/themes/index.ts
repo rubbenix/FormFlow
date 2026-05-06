@@ -174,7 +174,7 @@ export function themeToCSSVariables(
   };
   for (const [key, cssKey] of Object.entries(typoMap)) {
     lines.push(
-      `  --ff-${cssKey}: ${(typography as Record<string, string>)[key]};`,
+      `  --ff-${cssKey}: ${(typography as unknown as Record<string, string>)[key]};`,
     );
   }
 

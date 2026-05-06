@@ -3,6 +3,8 @@
  * Runs before every test file.
  */
 
+import { afterEach } from "vitest";
+
 // Mock localStorage for all tests
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
