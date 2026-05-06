@@ -24,7 +24,6 @@ import type {
   FormStep,
   FormField,
   FieldValue,
-  FormValues,
   FormFlowTheme,
 } from "../types/index.js";
 
@@ -304,7 +303,6 @@ export function createFormFlow(
 
     root.innerHTML = "";
 
-    const visibleSteps = engine.getVisibleSteps();
     const currentStep = engine.getCurrentStep();
     const currentIndex = engine.getCurrentStepIndex();
     const total = engine.getTotalSteps();

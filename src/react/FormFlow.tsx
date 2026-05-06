@@ -52,7 +52,6 @@ export function FormFlow({
   validateOnChange = false,
   allowStepJump = false,
   showProgress = true,
-  showStepTitle = false,
   nextLabel = "Next",
   backLabel = "Back",
   submitLabel = "Submit",

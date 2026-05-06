@@ -3,7 +3,7 @@
  * Tests for step navigation with validation, submission, and lifecycle hooks.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { FormEngine } from "../src/core/FormEngine.js";
 import { required, email, minLength } from "../src/validators/index.js";
 import type { FormFlowConfig, FormStep } from "../src/types/index.js";

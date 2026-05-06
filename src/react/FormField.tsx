@@ -73,14 +73,14 @@ export const FormField = React.memo(function FormField({
   const errorId = `${inputId}-error`;
   const descId = `${inputId}-desc`;
 
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = useCallback(() => {
+    setIsFocused(false);
+    onBlur();
+  }, [onBlur]);
+
   if (!theme) return null;
   const t = theme;
-
-  // Check visibility condition
-  if (field.condition) {
-    // Condition is evaluated in the parent; if this renders, it's visible
-    // (parent skips hidden fields). But we guard here for standalone use.
-  }
 
   const hasError = !!(
     validation &&
@@ -95,12 +95,6 @@ export const FormField = React.memo(function FormField({
     validation.touched &&
     validation.dirty
   );
-
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = useCallback(() => {
-    setIsFocused(false);
-    onBlur();
-  }, [onBlur]);
 
   const sharedInputProps = {
     id: inputId,
