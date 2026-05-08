@@ -149,4 +149,4 @@ jobs:
         run: pnpm run build
 
       - name: Pack (dry run)
-        run: pnpm pack --dry-run
+        run: pnpm pack --json && ls -lh *.tgz && rm *.tgz
