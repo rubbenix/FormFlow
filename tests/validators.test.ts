@@ -15,6 +15,12 @@ import {
   matches,
   custom,
   compose,
+  phone,
+  postalCode,
+  oneOf,
+  between,
+  alphanumeric,
+  strongPassword,
 } from "../src/validators/index.js";
 
 const EMPTY_VALUES = {};
@@ -307,5 +313,113 @@ describe("compose()", () => {
     // Passes all
     const r3 = await v.validate("valid@example.com", EMPTY_VALUES);
     expect(r3.valid).toBe(true);
+  });
+});
+
+// ─── phone ────────────────────────────────────────────────────────────────────
+
+describe("phone()", () => {
+  const v = phone();
+  it("accepts international formats", async () => {
+    expect((await v.validate("+34 600 123 456", EMPTY_VALUES)).valid).toBe(
+      true,
+    );
+    expect((await v.validate("(415) 555-0132", EMPTY_VALUES)).valid).toBe(true);
+    expect((await v.validate("+1 415-555-0132", EMPTY_VALUES)).valid).toBe(
+      true,
+    );
+  });
+
+  it("rejects garbage", async () => {
+    expect((await v.validate("not a phone", EMPTY_VALUES)).valid).toBe(false);
+    expect((await v.validate("12", EMPTY_VALUES)).valid).toBe(false);
+  });
+
+  it("passes through empty values", async () => {
+    expect((await v.validate("", EMPTY_VALUES)).valid).toBe(true);
+  });
+});
+
+// ─── postalCode ───────────────────────────────────────────────────────────────
+
+describe("postalCode()", () => {
+  it("validates US zips", async () => {
+    const v = postalCode("US");
+    expect((await v.validate("90210", EMPTY_VALUES)).valid).toBe(true);
+    expect((await v.validate("90210-1234", EMPTY_VALUES)).valid).toBe(true);
+    expect((await v.validate("ABCDE", EMPTY_VALUES)).valid).toBe(false);
+  });
+
+  it("validates ES postal codes", async () => {
+    const v = postalCode("ES");
+    expect((await v.validate("28001", EMPTY_VALUES)).valid).toBe(true);
+    expect((await v.validate("280", EMPTY_VALUES)).valid).toBe(false);
+  });
+
+  it("falls back to ANY pattern by default", async () => {
+    const v = postalCode();
+    expect((await v.validate("ABC-123", EMPTY_VALUES)).valid).toBe(true);
+  });
+});
+
+// ─── oneOf ────────────────────────────────────────────────────────────────────
+
+describe("oneOf()", () => {
+  const v = oneOf(["red", "green", "blue"]);
+  it("accepts allowed values", async () => {
+    expect((await v.validate("red", EMPTY_VALUES)).valid).toBe(true);
+  });
+  it("rejects disallowed values", async () => {
+    expect((await v.validate("yellow", EMPTY_VALUES)).valid).toBe(false);
+  });
+});
+
+// ─── between ──────────────────────────────────────────────────────────────────
+
+describe("between()", () => {
+  const v = between(1, 10);
+  it("accepts inclusive bounds", async () => {
+    expect((await v.validate(1, EMPTY_VALUES)).valid).toBe(true);
+    expect((await v.validate(10, EMPTY_VALUES)).valid).toBe(true);
+  });
+  it("rejects outside bounds", async () => {
+    expect((await v.validate(0, EMPTY_VALUES)).valid).toBe(false);
+    expect((await v.validate(11, EMPTY_VALUES)).valid).toBe(false);
+  });
+  it("rejects non-numeric", async () => {
+    expect((await v.validate("abc", EMPTY_VALUES)).valid).toBe(false);
+  });
+});
+
+// ─── alphanumeric ─────────────────────────────────────────────────────────────
+
+describe("alphanumeric()", () => {
+  const v = alphanumeric();
+  it("accepts letters and digits", async () => {
+    expect((await v.validate("Abc123", EMPTY_VALUES)).valid).toBe(true);
+  });
+  it("rejects symbols and spaces", async () => {
+    expect((await v.validate("Abc 123", EMPTY_VALUES)).valid).toBe(false);
+    expect((await v.validate("Abc-123", EMPTY_VALUES)).valid).toBe(false);
+  });
+});
+
+// ─── strongPassword ───────────────────────────────────────────────────────────
+
+describe("strongPassword()", () => {
+  const v = strongPassword();
+  it("accepts strong passwords", async () => {
+    expect((await v.validate("Secret12", EMPTY_VALUES)).valid).toBe(true);
+  });
+  it("rejects passwords without uppercase", async () => {
+    expect((await v.validate("secret12", EMPTY_VALUES)).valid).toBe(false);
+  });
+  it("rejects short passwords", async () => {
+    expect((await v.validate("Abc12", EMPTY_VALUES)).valid).toBe(false);
+  });
+  it("requires symbols when configured", async () => {
+    const strict = strongPassword({ requireSymbol: true });
+    expect((await strict.validate("Secret12", EMPTY_VALUES)).valid).toBe(false);
+    expect((await strict.validate("Secret12!", EMPTY_VALUES)).valid).toBe(true);
   });
 });

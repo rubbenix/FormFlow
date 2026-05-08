@@ -303,6 +303,261 @@ export function compose(...validators: Validator[]): Validator {
   };
 }
 
+// ─── phone ───────────────────────────────────────────────────────────────────
+
+const PHONE_REGEX = /^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]{6,}$/;
+
+/**
+ * Validates that the value is a plausible international phone number.
+ * Accepts digits, spaces, dashes, dots, parentheses and an optional leading `+`.
+ *
+ * @param message Custom error message
+ */
+export function phone(
+  message = "Please enter a valid phone number",
+): Validator {
+  return {
+    key: "phone",
+    validate(value) {
+      if (isEmpty(value)) return { valid: true, message: "" };
+      const cleaned = toString(value).replace(/\s+/g, "");
+      return PHONE_REGEX.test(cleaned)
+        ? { valid: true, message: "" }
+        : { valid: false, message };
+    },
+  };
+}
+
+// ─── postalCode ──────────────────────────────────────────────────────────────
+
+const POSTAL_CODE_PATTERNS: Record<string, RegExp> = {
+  US: /^\d{5}(-\d{4})?$/,
+  CA: /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/,
+  UK: /^([A-Za-z][A-Ha-hJ-Yj-y]?\d[A-Za-z\d]?\s?\d[A-Za-z]{2}|GIR\s?0AA)$/,
+  ES: /^\d{5}$/,
+  FR: /^\d{5}$/,
+  DE: /^\d{5}$/,
+  IT: /^\d{5}$/,
+  MX: /^\d{5}$/,
+  AU: /^\d{4}$/,
+  BR: /^\d{5}-?\d{3}$/,
+  JP: /^\d{3}-?\d{4}$/,
+  IN: /^\d{6}$/,
+  // Generic fallback: 3–10 chars of letters/digits/dashes/spaces
+  ANY: /^[A-Za-z0-9 -]{3,10}$/,
+};
+
+/**
+ * Validates a postal/zip code.
+ * Accepts a country code (e.g. "US", "ES", "UK") or "ANY" for permissive matching.
+ *
+ * @param country Country code key from POSTAL_CODE_PATTERNS (defaults to "ANY")
+ * @param message Custom error message
+ */
+export function postalCode(
+  country: keyof typeof POSTAL_CODE_PATTERNS = "ANY",
+  message = "Please enter a valid postal code",
+): Validator {
+  const regex =
+    POSTAL_CODE_PATTERNS[country] ??
+    POSTAL_CODE_PATTERNS.ANY ??
+    /^[A-Za-z0-9 -]{3,10}$/;
+  return {
+    key: `postalCode:${country}`,
+    validate(value) {
+      if (isEmpty(value)) return { valid: true, message: "" };
+      return regex.test(toString(value).trim())
+        ? { valid: true, message: "" }
+        : { valid: false, message };
+    },
+  };
+}
+
+// ─── oneOf ───────────────────────────────────────────────────────────────────
+
+/**
+ * Validates that the value is one of an allowed list.
+ *
+ * @param allowed Allowed values
+ * @param message Custom error message
+ */
+export function oneOf(
+  allowed: ReadonlyArray<string | number>,
+  message?: string,
+): Validator {
+  return {
+    key: `oneOf:${allowed.join(",")}`,
+    validate(value) {
+      if (isEmpty(value)) return { valid: true, message: "" };
+      return allowed.includes(value as string | number)
+        ? { valid: true, message: "" }
+        : {
+            valid: false,
+            message:
+              message ?? `Must be one of: ${allowed.map(String).join(", ")}`,
+          };
+    },
+  };
+}
+
+// ─── between ─────────────────────────────────────────────────────────────────
+
+/**
+ * Validates that a numeric value falls within an inclusive range.
+ *
+ * @param min Minimum allowed
+ * @param max Maximum allowed
+ * @param message Custom error message
+ */
+export function between(min: number, max: number, message?: string): Validator {
+  return {
+    key: `between:${min}:${max}`,
+    validate(value) {
+      if (isEmpty(value)) return { valid: true, message: "" };
+      const n = toNumber(value);
+      if (isNaN(n)) {
+        return { valid: false, message: message ?? "Must be a valid number" };
+      }
+      return n >= min && n <= max
+        ? { valid: true, message: "" }
+        : {
+            valid: false,
+            message: message ?? `Must be between ${min} and ${max}`,
+          };
+    },
+  };
+}
+
+// ─── alphanumeric ────────────────────────────────────────────────────────────
+
+const ALPHANUMERIC_REGEX = /^[A-Za-z0-9]+$/;
+
+/**
+ * Validates that the value contains only letters and numbers.
+ *
+ * @param message Custom error message
+ */
+export function alphanumeric(
+  message = "Only letters and numbers are allowed",
+): Validator {
+  return {
+    key: "alphanumeric",
+    validate(value) {
+      if (isEmpty(value)) return { valid: true, message: "" };
+      return ALPHANUMERIC_REGEX.test(toString(value))
+        ? { valid: true, message: "" }
+        : { valid: false, message };
+    },
+  };
+}
+
+// ─── strongPassword ──────────────────────────────────────────────────────────
+
+/**
+ * Validates a strong password.
+ * By default requires: 8+ chars, 1 uppercase, 1 lowercase, 1 digit.
+ *
+ * @param options Customize requirements
+ * @param message Custom error message
+ */
+export function strongPassword(
+  options: {
+    minLength?: number;
+    requireUppercase?: boolean;
+    requireLowercase?: boolean;
+    requireDigit?: boolean;
+    requireSymbol?: boolean;
+  } = {},
+  message?: string,
+): Validator {
+  const {
+    minLength: min = 8,
+    requireUppercase = true,
+    requireLowercase = true,
+    requireDigit = true,
+    requireSymbol = false,
+  } = options;
+
+  return {
+    key: "strongPassword",
+    validate(value) {
+      if (isEmpty(value)) return { valid: true, message: "" };
+      const str = toString(value);
+      const reasons: string[] = [];
+      if (str.length < min) reasons.push(`${min}+ chars`);
+      if (requireUppercase && !/[A-Z]/.test(str))
+        reasons.push("an uppercase letter");
+      if (requireLowercase && !/[a-z]/.test(str))
+        reasons.push("a lowercase letter");
+      if (requireDigit && !/\d/.test(str)) reasons.push("a digit");
+      if (requireSymbol && !/[^A-Za-z0-9]/.test(str)) reasons.push("a symbol");
+
+      if (reasons.length === 0) return { valid: true, message: "" };
+      return {
+        valid: false,
+        message: message ?? `Password must include ${reasons.join(", ")}`,
+      };
+    },
+  };
+}
+
+// ─── i18n configuration ──────────────────────────────────────────────────────
+
+/** Default error messages shown by built-in validators. Override with `setLocale`. */
+export interface ValidatorMessages {
+  required: string;
+  email: string;
+  minLength: (min: number) => string;
+  maxLength: (max: number) => string;
+  number: string;
+  numberInteger: string;
+  numberMin: (min: number) => string;
+  numberMax: (max: number) => string;
+  pattern: string;
+  url: string;
+  matches: (fieldId: string) => string;
+  phone: string;
+  postalCode: string;
+  oneOf: (allowed: ReadonlyArray<string | number>) => string;
+  between: (min: number, max: number) => string;
+  alphanumeric: string;
+  strongPassword: (reasons: string[]) => string;
+}
+
+/** Locale registry. Pre-loaded with English. Add more via `setLocale`. */
+export const messages: ValidatorMessages = {
+  required: "This field is required",
+  email: "Please enter a valid email address",
+  minLength: (min) => `Must be at least ${min} characters`,
+  maxLength: (max) => `Must be no more than ${max} characters`,
+  number: "Must be a valid number",
+  numberInteger: "Must be a whole number",
+  numberMin: (min) => `Must be at least ${min}`,
+  numberMax: (max) => `Must be no more than ${max}`,
+  pattern: "Invalid format",
+  url: "Please enter a valid URL",
+  matches: (fieldId) => `Must match the ${fieldId} field`,
+  phone: "Please enter a valid phone number",
+  postalCode: "Please enter a valid postal code",
+  oneOf: (allowed) => `Must be one of: ${allowed.map(String).join(", ")}`,
+  between: (min, max) => `Must be between ${min} and ${max}`,
+  alphanumeric: "Only letters and numbers are allowed",
+  strongPassword: (reasons) => `Password must include ${reasons.join(", ")}`,
+};
+
+/**
+ * Override the default validator messages — useful for i18n.
+ *
+ * @example
+ * setLocale({
+ *   required: "Este campo es obligatorio",
+ *   email: "Email no válido",
+ * });
+ */
+export function setLocale(overrides: Partial<ValidatorMessages>): void {
+  Object.assign(messages, overrides);
+}
+
 // ─── Convenience re-exports as a namespace ────────────────────────────────────
 
 export const validators = {
@@ -316,6 +571,12 @@ export const validators = {
   matches,
   custom,
   compose,
+  phone,
+  postalCode,
+  oneOf,
+  between,
+  alphanumeric,
+  strongPassword,
 } as const;
 
 export default validators;

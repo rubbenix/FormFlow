@@ -58,8 +58,18 @@ export {
   matches,
   custom,
   compose,
+  phone,
+  postalCode,
+  oneOf,
+  between,
+  alphanumeric,
+  strongPassword,
+  setLocale,
+  messages,
   validators,
 } from "./validators/index.js";
+
+export type { ValidatorMessages } from "./validators/index.js";
 
 // ─── Themes ───────────────────────────────────────────────────────────────────
 

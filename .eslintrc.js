@@ -49,6 +49,7 @@ module.exports = {
       files: ["tests/**/*.ts", "tests/**/*.tsx"],
       rules: {
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
         "no-console": "off",
       },
     },

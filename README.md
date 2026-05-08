@@ -259,7 +259,11 @@ function CustomInput({ fieldId }: { fieldId: string }) {
 Import validators from `formflow/validators` (or directly from `formflow`):
 
 ```ts
-import { required, email, minLength, maxLength, number, pattern, url, matches, custom, compose } from "formflow/validators";
+import {
+  required, email, minLength, maxLength, number, pattern, url, matches,
+  custom, compose, phone, postalCode, oneOf, between, alphanumeric,
+  strongPassword, setLocale,
+} from "formflow/validators";
 ```
 
 | Validator | Description |
@@ -272,6 +276,12 @@ import { required, email, minLength, maxLength, number, pattern, url, matches, c
 | `pattern(regex, message?)` | Must match the given RegExp |
 | `url(protocols?, message?)` | Must be a valid URL |
 | `matches(fieldId, message?)` | Must equal the value of another field |
+| `phone(message?)` | International phone number (E.164-friendly) |
+| `postalCode(country?, message?)` | Postal/ZIP code (US, ES, UK, FR, DE, JP, BR, MX…) |
+| `oneOf(allowed, message?)` | Value must be in an allowed list |
+| `between(min, max, message?)` | Numeric value within an inclusive range |
+| `alphanumeric(message?)` | Only letters and digits |
+| `strongPassword(opts?, message?)` | Configurable strong password (length, case, digit, symbol) |
 | `custom(fn, key?)` | Wrap any sync or async validation function |
 | `compose(...validators)` | Run multiple validators in sequence |
 
@@ -284,6 +294,21 @@ const usernameAvailable = custom(async (value) => {
     ? { valid: false, message: "Username is already taken" }
     : { valid: true, message: "" };
 }, "usernameAvailable");
+```
+
+### Internationalization (i18n)
+
+Override the default validator messages globally with `setLocale`:
+
+```ts
+import { setLocale } from "formflow/validators";
+
+setLocale({
+  required: "Este campo es obligatorio",
+  email: "Email no válido",
+  minLength: (min) => `Mínimo ${min} caracteres`,
+  strongPassword: (reasons) => `La contraseña debe incluir ${reasons.join(", ")}`,
+});
 ```
 
 ---

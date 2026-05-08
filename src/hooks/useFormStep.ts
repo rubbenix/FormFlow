@@ -56,8 +56,9 @@ export function useFormStep(): UseFormStepReturn {
   // Extract only this step's validation
   const stepValidation: FormValidationState = {};
   for (const field of currentStep.fields) {
-    if (state.validation[field.id]) {
-      stepValidation[field.id] = state.validation[field.id]!;
+    const fieldValidation = state.validation[field.id];
+    if (fieldValidation) {
+      stepValidation[field.id] = fieldValidation;
     }
   }
 

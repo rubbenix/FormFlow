@@ -136,8 +136,8 @@ export class FormEngine {
       ...stepValidation,
     };
 
-    for (const fieldId of Object.keys(stepValidation)) {
-      this.manager.setFieldValidation(fieldId, stepValidation[fieldId]!);
+    for (const [fieldId, fieldState] of Object.entries(stepValidation)) {
+      this.manager.setFieldValidation(fieldId, fieldState);
     }
 
     if (!isStepValid(currentStep, updatedValidation, values)) {
@@ -218,8 +218,8 @@ export class FormEngine {
     const { values } = this.manager.getState();
     const stepValidation = await validateStep(currentStep, values);
 
-    for (const fieldId of Object.keys(stepValidation)) {
-      this.manager.setFieldValidation(fieldId, stepValidation[fieldId]!);
+    for (const [fieldId, fieldState] of Object.entries(stepValidation)) {
+      this.manager.setFieldValidation(fieldId, fieldState);
     }
 
     const merged: FormValidationState = {

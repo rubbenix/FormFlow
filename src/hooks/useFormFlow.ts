@@ -57,7 +57,11 @@ export function useFormFlow(config: FormFlowConfig): UseFormFlowReturn {
 
   const state: FormFlowState = engine.getState();
   const visibleSteps: FormStep[] = engine.getVisibleSteps();
-  const currentStep: FormStep = engine.getCurrentStep() ?? config.steps[0]!;
+  const fallbackStep = config.steps[0];
+  if (!fallbackStep) {
+    throw new Error("FormFlow: at least one step is required");
+  }
+  const currentStep: FormStep = engine.getCurrentStep() ?? fallbackStep;
   const currentStepIndex = engine.getCurrentStepIndex();
   const totalSteps = engine.getTotalSteps();
   const progress = engine.getProgress();
